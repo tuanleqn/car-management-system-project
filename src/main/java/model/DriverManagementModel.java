@@ -1,5 +1,5 @@
 package model;
-import java.sql.Driver;
+
 import java.util.ArrayList;
 public class DriverManagementModel {
     private ArrayList<DriverModel> driverList;
