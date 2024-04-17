@@ -23,10 +23,11 @@ import javax.swing.SwingConstants;
 import javax.swing.border.EmptyBorder;
 import javax.swing.table.DefaultTableModel;
 
-import model.DriverStatus;
 import controller.DriverManagementListener;
-import test.Init;
 import model.DriverManagementModel;
+import model.DriverModel;
+import model.DriverStatus;
+import test.Init;
 public class DriverManagementView extends JFrame {
 
     private static final long serialVersionUID = 1L;
