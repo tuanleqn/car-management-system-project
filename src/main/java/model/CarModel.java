@@ -6,7 +6,7 @@ public class CarModel {
 	private String registrationNum;
 	private CarType carType;
 	private String Size;
-	private float Tonnage;
+	private double Tonnage;
 	private FuelType fuelType;
 	private CarStatus status;
 
@@ -14,7 +14,7 @@ public class CarModel {
 
 	}
 
-	public CarModel(String registrationNum, CarType carType, String size, float tonnage, FuelType fuelType,
+	public CarModel(String registrationNum, CarType carType, String size, double tonnage, FuelType fuelType,
 			CarStatus status) {
 		this.registrationNum = registrationNum;
 		this.carType = carType;
@@ -48,11 +48,11 @@ public class CarModel {
 		Size = size;
 	}
 
-	public float getTonnage() {
+	public double getTonnage() {
 		return Tonnage;
 	}
 
-	public void setTonnage(float tonnage) {
+	public void setTonnage(double tonnage) {
 		Tonnage = tonnage;
 	}
 

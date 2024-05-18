@@ -6,7 +6,7 @@ public class LoginModel {
 
 	public LoginModel() {
 		this.username = "admin"; // co the dinh db vao day
-		this.password = "admin"; // co the dinh db vao day
+		this.password = "123"; // co the dinh db vao day
 	}
 
 	public String getUsername() {

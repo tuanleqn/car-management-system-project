@@ -137,6 +137,7 @@ public class LoginView extends JFrame {
 		btnReset.setBounds(480, 373, 110, 28);
 		btnReset.addActionListener(loginListener);
 		contentPane.add(btnReset);
+
 	}
 
 	public JTextField getTextFieldUserName() {
@@ -180,7 +181,7 @@ public class LoginView extends JFrame {
 	}
 
 	public boolean isComfirmed() throws InterruptedException {
-		Thread.sleep(10); // Làm chậm luồng thực thi trong 10 mili giây
+		Thread.sleep(15); // Làm chậm luồng thực thi trong 10 mili giây
 		return comfirmLogin;
 	}
 
@@ -196,7 +197,8 @@ public class LoginView extends JFrame {
 			this.comfirmLogin = true;
 		} else {
 			this.comfirmLogin = false;
-			JOptionPane.showMessageDialog(this, "Looks like you entered username or password incorrectly.\n Please enter again",
+			JOptionPane.showMessageDialog(this,
+					"Looks like you entered username or password incorrectly.\n Please enter again",
 					"Verify Information", JOptionPane.WARNING_MESSAGE);
 		}
 	}

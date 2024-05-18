@@ -29,6 +29,7 @@ import model.CarModel;
 import model.CarStatus;
 import model.CarType;
 import model.FuelType;
+import model.TripModel;
 import test.Init;
 
 public class CarManagementView extends JFrame {
@@ -74,6 +75,7 @@ public class CarManagementView extends JFrame {
 	 */
 	public CarManagementView() {
 		carManagementModel = new CarManagementModel();
+		carManagementModel.get();
 
 		setIconImage(Toolkit.getDefaultToolkit()
 				.getImage(CarManagementView.class.getResource("/view/01_logobachkhoasang.png")));
@@ -189,7 +191,7 @@ public class CarManagementView extends JFrame {
 		lblNewLabel_2_3_1_1.setFont(new Font("Century Gothic", Font.PLAIN, 16));
 		panel_2.add(lblNewLabel_2_3_1_1);
 
-		JLabel lblNewLabel_2_3_1_2 = new JLabel("Size (L-W-H) (m)");
+		JLabel lblNewLabel_2_3_1_2 = new JLabel("Size (m)");
 		lblNewLabel_2_3_1_2.setBounds(334, 58, 134, 21);
 		lblNewLabel_2_3_1_2.setForeground(new Color(3, 43, 145));
 		lblNewLabel_2_3_1_2.setFont(new Font("Century Gothic", Font.PLAIN, 16));
@@ -341,7 +343,18 @@ public class CarManagementView extends JFrame {
 		tableCarList = new JTable();
 		scrollPane.setViewportView(tableCarList);
 		tableCarList.setRowSelectionAllowed(false);
-		tableCarList.setModel(new DefaultTableModel(new Object[][] {},
+		String[][] tableData = new String[carManagementModel.getCarList().size()][6];
+		int row = 0;
+		for (CarModel carModel : carManagementModel.getCarList()) {
+			tableData[row][0] = carModel.getRegistrationNum() + "";
+			tableData[row][1] = carModel.getCarType().getCarTypeName() + "";
+			tableData[row][2] = carModel.getSize() + "";
+			tableData[row][3] = carModel.getTonnage() + "";
+			tableData[row][4] = carModel.getFuelType().getFuelTypeName() + "";
+			tableData[row][5] = carModel.getStatus().getCarStatusName() + "";
+			row++;
+		}
+		tableCarList.setModel(new DefaultTableModel(tableData,
 				new String[] { "Registration Number", "Car Type", "Size", "Tonnage", "Fuel Type", "Status" }));
 		tableCarList.setForeground(Color.BLACK);
 		tableCarList.setFont(new Font("Century Gothic", Font.PLAIN, 14));
@@ -420,6 +433,14 @@ public class CarManagementView extends JFrame {
 		this.lbNotification = lbNotification;
 	}
 
+	public JTable getTableCarList() {
+		return tableCarList;
+	}
+
+	public void setTableCarList(JTable tableCarList) {
+		this.tableCarList = tableCarList;
+	}
+
 	public void clearForm() {
 		this.textFieldRegistrationNum.setText("");
 		this.textFieldSize.setText("");
@@ -440,6 +461,14 @@ public class CarManagementView extends JFrame {
 		int carStatusID = this.cbStatus.getSelectedIndex() - 1;
 		CarStatus carStatus = CarStatus.getCarStatusById(carStatusID);
 
+		if (registrationNum == "" || size == "" || this.textFieldTonnage.getText() == ""
+				|| carType.getCarTypeName() == "" || fuelType.getFuelTypeName() == ""
+				|| carStatus.getCarStatusName() == "") {
+			JOptionPane.showMessageDialog(this,
+					"Looks like you're leaving the information blank.\n Please add it fully.", "Missing Information",
+					JOptionPane.WARNING_MESSAGE);
+		}
+
 		if (!this.isValidCarRegistrationNum(registrationNum)) {
 			JOptionPane.showMessageDialog(this, "Registration number is invalid.");
 			return;
@@ -453,7 +482,7 @@ public class CarManagementView extends JFrame {
 						&& fuelType.getFuelTypeName().equals("Electricity"))) {
 			JOptionPane.showMessageDialog(this, "Car type and fuel type are incompatible.");
 			return;
-		} 
+		}
 
 		CarModel cm = new CarModel(registrationNum, carType, size, tonnange, fuelType, carStatus);
 		this.saveOrUpdateTheCar(cm);
@@ -495,6 +524,11 @@ public class CarManagementView extends JFrame {
 			this.clearForm();
 			this.lbNotification.setText("You just add a new car");
 		} else {
+			if (checkTheExistenceOfTheCarInTheTrip(cm.getRegistrationNum() + "")) {
+				JOptionPane.showMessageDialog(this, "The car is on a trip, the status cannot be modified.");
+				return;
+			}
+
 			this.carManagementModel.update(cm);
 			int numberOfRows = tableModel.getRowCount();
 			for (int i = 0; i < numberOfRows; i++) {
@@ -506,6 +540,8 @@ public class CarManagementView extends JFrame {
 					tableModel.setValueAt(cm.getTonnage() + "", i, 3);
 					tableModel.setValueAt(cm.getFuelType().getFuelTypeName() + "", i, 4);
 					tableModel.setValueAt(cm.getStatus().getCarStatusName() + "", i, 5);
+
+					Init.tripManagementView.updateTheCarToTableInTripManagement(cm);
 				}
 			}
 			this.clearForm();
@@ -513,11 +549,26 @@ public class CarManagementView extends JFrame {
 		}
 	}
 
+	private boolean checkTheExistenceOfTheCarInTheTrip(String registrationNum) {
+		DefaultTableModel tableModel = (DefaultTableModel) Init.tripManagementView.getTableTripList().getModel();
+		int numberOfRows = tableModel.getRowCount();
+		for (int i = 0; i < numberOfRows; i++) {
+			String id = tableModel.getValueAt(i, 7) + "";
+			if (id.equals(registrationNum)) {
+				if (tableModel.getValueAt(i, 5).equals("In progress")) {
+					return true;
+				}
+			}
+		}
+		return false;
+	}
+
 	private void saveTheCarToTable(CarModel cm) {
 		DefaultTableModel tableModel = (DefaultTableModel) tableCarList.getModel();
 		tableModel.addRow(new Object[] { cm.getRegistrationNum() + "", cm.getCarType().getCarTypeName() + "",
 				cm.getSize() + "", cm.getTonnage() + "", cm.getFuelType().getFuelTypeName() + "",
 				cm.getStatus().getCarStatusName() + "", });
+		Init.tripManagementView.saveTheCarToTableInTripManagement(cm);
 	}
 
 	public void displaySelectedCarInformation() {
@@ -554,6 +605,48 @@ public class CarManagementView extends JFrame {
 			CarModel cm = getSelectedCarInformation();
 			this.carManagementModel.delete(cm);
 			tableModel.removeRow(row);
+			Init.tripManagementView.deleteTheCarToTableInTripManagement(row);
 		}
+	}
+
+	public void updateTheStatusOfCarIdInCarManagement(TripModel tm, String status) {
+		DefaultTableModel tableModel = (DefaultTableModel) tableCarList.getModel();
+		int numberOfRows = tableModel.getRowCount();
+
+		for (int i = 0; i < numberOfRows; i++) {
+			String id = tm.getCarID() + "";
+			if (id.equals(tableModel.getValueAt(i, 0) + "")) {
+				String registrationNum = tableModel.getValueAt(i, 0) + "";
+				CarType carType = CarType.getCarTypeByName(tableModel.getValueAt(i, 1) + "");
+				String size = tableModel.getValueAt(i, 2) + "";
+				float tonnage = Float.valueOf(tableModel.getValueAt(i, 3) + "");
+				FuelType fuelType = FuelType.getFuelTypeByName(tableModel.getValueAt(i, 4) + "");
+				CarStatus carStatus = CarStatus.getCarStatusByName(tableModel.getValueAt(i, 5) + "");
+				CarStatus carStatus2 = new CarStatus(carStatus.getCarStatusID(), status);
+
+				CarModel cm = new CarModel(registrationNum, carType, size, tonnage, fuelType, carStatus2);
+				UpdateTheCar(cm);
+			}
+		}
+	}
+
+	private void UpdateTheCar(CarModel cm) {
+		DefaultTableModel tableModel = (DefaultTableModel) tableCarList.getModel();
+		this.carManagementModel.update(cm);
+		int numberOfRows = tableModel.getRowCount();
+		for (int i = 0; i < numberOfRows; i++) {
+			String id = tableModel.getValueAt(i, 0) + "";
+			if (id.equals(cm.getRegistrationNum() + "")) {
+				tableModel.setValueAt(cm.getRegistrationNum() + "", i, 0);
+				tableModel.setValueAt(cm.getCarType().getCarTypeName() + "", i, 1);
+				tableModel.setValueAt(cm.getSize() + "", i, 2);
+				tableModel.setValueAt(cm.getTonnage() + "", i, 3);
+				tableModel.setValueAt(cm.getFuelType().getFuelTypeName() + "", i, 4);
+				tableModel.setValueAt(cm.getStatus().getCarStatusName() + "", i, 5);
+
+				Init.tripManagementView.updateTheCarToTableInTripManagement(cm);
+			}
+		}
+
 	}
 }

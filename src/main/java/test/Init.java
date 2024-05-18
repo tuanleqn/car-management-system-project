@@ -26,50 +26,28 @@ public class Init {
 			progressView.setVisible(true);
 			try {
 				for (int i = 0; i <= 100; i++) {
-					Thread.sleep(25);
+					Thread.sleep(15);
 					progressView.progressBar.setValue(i);
 				}
 			} catch (Exception e) {
-				// TODO: handle exception
+				System.exit(1);
 			}
+			progressView.dispose();
+
+			carManagementView = new CarManagementView();
+			carManagementView.setVisible(false);
+
+			driverManagementView = new DriverManagementView();
+			driverManagementView.setVisible(false);
+
+			tripManagementView = new TripManagementView();
+			tripManagementView.setVisible(false);
+
+			statisticsView = new StatisticsView();
+			statisticsView.setVisible(false);
 
 			loginView = new LoginView();
 			loginView.setVisible(true);
-			progressView.dispose();
-			while (true) {
-				if (loginView.isComfirmed()) {
-					loginView.setVisible(false);
-					loginView.clearForm();
-					break;
-				} else {
-				}
-			}
-			if (carManagementView == null) {
-				carManagementView = new CarManagementView();
-				carManagementView.setVisible(true);
-			} else {
-				carManagementView.setVisible(true);
-			}
-			if (driverManagementView == null) {
-				driverManagementView = new DriverManagementView();
-				driverManagementView.setVisible(false);
-			} else {
-				driverManagementView.setVisible(true);
-			}
-			if (tripManagementView == null) {
-				tripManagementView = new TripManagementView();
-				tripManagementView.setVisible(false);
-			} else {
-				tripManagementView.setVisible(true);
-			}
-			if (statisticsView == null) {
-				statisticsView = new StatisticsView();
-				statisticsView.setVisible(false);
-
-			} else {
-				statisticsView.setVisible(true);
-			}
-
 		} catch (Exception ex) {
 			ex.printStackTrace();
 		}

@@ -10,6 +10,7 @@ import java.awt.event.MouseEvent;
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JSeparator;
 import javax.swing.SwingConstants;
@@ -21,6 +22,10 @@ public class StatisticsView extends JFrame {
 
 	private static final long serialVersionUID = 1L;
 	private JPanel contentPane;
+	private JLabel lbTotalRevenue;
+	private JLabel lbTotalNumberOfTrips;
+	private JLabel lbTotalNumberOfDrivers;
+	private JLabel lbTotalNumberOfCars;
 
 	/**
 	 * Launch the application.
@@ -42,7 +47,8 @@ public class StatisticsView extends JFrame {
 	 * Create the frame.
 	 */
 	public StatisticsView() {
-		setIconImage(Toolkit.getDefaultToolkit().getImage(CarManagementView.class.getResource("/view/01_logobachkhoasang.png")));
+		setIconImage(Toolkit.getDefaultToolkit()
+				.getImage(CarManagementView.class.getResource("/view/01_logobachkhoasang.png")));
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		this.setSize(1224, 806);
 		this.setLocationRelativeTo(null);
@@ -51,13 +57,13 @@ public class StatisticsView extends JFrame {
 
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
-		
+
 		JPanel panel = new JPanel();
 		panel.setLayout(null);
 		panel.setBackground(new Color(3, 43, 145));
 		panel.setBounds(0, 0, 241, 769);
 		contentPane.add(panel);
-		
+
 		JLabel lbCar = new JLabel("Car");
 		lbCar.setHorizontalAlignment(SwingConstants.CENTER);
 		lbCar.setForeground(Color.WHITE);
@@ -71,7 +77,7 @@ public class StatisticsView extends JFrame {
 			}
 		});
 		panel.add(lbCar);
-		
+
 		JLabel lbDriver = new JLabel("Driver");
 		lbDriver.setHorizontalAlignment(SwingConstants.CENTER);
 		lbDriver.setForeground(Color.WHITE);
@@ -85,7 +91,7 @@ public class StatisticsView extends JFrame {
 			}
 		});
 		panel.add(lbDriver);
-		
+
 		JLabel lbTrip = new JLabel("Trip");
 		lbTrip.setHorizontalAlignment(SwingConstants.CENTER);
 		lbTrip.setForeground(Color.WHITE);
@@ -99,7 +105,7 @@ public class StatisticsView extends JFrame {
 			}
 		});
 		panel.add(lbTrip);
-		
+
 		JLabel lbLogout = new JLabel("Logout");
 		lbLogout.setHorizontalAlignment(SwingConstants.CENTER);
 		lbLogout.setForeground(Color.WHITE);
@@ -108,104 +114,143 @@ public class StatisticsView extends JFrame {
 		lbLogout.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				Init.loginView.setVisible(true);
-				setVisible(false);
+				int choice = JOptionPane.showConfirmDialog(Init.statisticsView, "Are you sure to logout?");
+				if (choice == JOptionPane.YES_OPTION) {
+					Init.loginView.setVisible(true);
+					setVisible(false);
+				}
 			}
 		});
 		panel.add(lbLogout);
-		
+
 		JLabel lblNewLabel_1 = new JLabel("");
-		lblNewLabel_1.setIcon(new ImageIcon(StatisticsView.class.getResource("/view/Graphicloads-Transport-Car-5.72.png")));
+		lblNewLabel_1
+				.setIcon(new ImageIcon(StatisticsView.class.getResource("/view/Graphicloads-Transport-Car-5.72.png")));
 		lblNewLabel_1.setHorizontalAlignment(SwingConstants.CENTER);
 		lblNewLabel_1.setBounds(84, 41, 72, 72);
 		panel.add(lblNewLabel_1);
-		
+
 		JPanel panel_1 = new JPanel();
 		panel_1.setBackground(new Color(255, 255, 255));
 		panel_1.setBounds(242, 0, 968, 25);
 		contentPane.add(panel_1);
 		panel_1.setLayout(null);
-		
+
 		JPanel panel_1_1 = new JPanel();
 		panel_1_1.setLayout(null);
 		panel_1_1.setBackground(Color.WHITE);
 		panel_1_1.setBounds(242, 744, 968, 25);
 		contentPane.add(panel_1_1);
-		
+
 		JLabel lblNewLabel = new JLabel("");
 		lblNewLabel.setForeground(new Color(3, 43, 145));
 		lblNewLabel.setFont(new Font("Century Gothic", Font.BOLD, 14));
 		lblNewLabel.setBounds(10, 0, 87, 23);
 		panel_1_1.add(lblNewLabel);
-		
+
 		JLabel lblText = new JLabel("");
 		lblText.setForeground(new Color(64, 0, 64));
 		lblText.setFont(new Font("Century Gothic", Font.BOLD, 14));
 		lblText.setBounds(107, 0, 861, 23);
 		panel_1_1.add(lblText);
-		
+
 		JPanel panel_2 = new JPanel();
 		panel_2.setBounds(242, 27, 968, 718);
 		contentPane.add(panel_2);
 		panel_2.setLayout(null);
-		
+
 		JLabel lblNewLabel_2_3 = new JLabel("Statistics");
 		lblNewLabel_2_3.setBounds(439, 10, 90, 28);
 		lblNewLabel_2_3.setForeground(new Color(3, 43, 145));
 		lblNewLabel_2_3.setFont(new Font("Century Gothic", Font.BOLD, 22));
 		panel_2.add(lblNewLabel_2_3);
-		
+
 		JLabel lblNewLabel_2_3_1_3 = new JLabel("Total Number Of Cars:");
 		lblNewLabel_2_3_1_3.setForeground(new Color(3, 43, 145));
 		lblNewLabel_2_3_1_3.setFont(new Font("Century Gothic", Font.PLAIN, 16));
 		lblNewLabel_2_3_1_3.setBounds(289, 91, 173, 21);
 		panel_2.add(lblNewLabel_2_3_1_3);
-		
-		JLabel lbTotalNumberOfCars = new JLabel("0");
+
+		lbTotalNumberOfCars = new JLabel(Init.carManagementView.getCarManagementModel().getTotalNumberOfCars() + "");
 		lbTotalNumberOfCars.setForeground(new Color(255, 0, 0));
 		lbTotalNumberOfCars.setFont(new Font("Century Gothic", Font.PLAIN, 16));
 		lbTotalNumberOfCars.setBounds(512, 91, 82, 21);
 		panel_2.add(lbTotalNumberOfCars);
-		
+
 		JLabel lblNewLabel_2_3_1_3_1 = new JLabel("Total Number Of Drivers:");
 		lblNewLabel_2_3_1_3_1.setForeground(new Color(3, 43, 145));
 		lblNewLabel_2_3_1_3_1.setFont(new Font("Century Gothic", Font.PLAIN, 16));
 		lblNewLabel_2_3_1_3_1.setBounds(289, 146, 189, 21);
 		panel_2.add(lblNewLabel_2_3_1_3_1);
-		
+
 		JLabel lblNewLabel_2_3_1_3_2 = new JLabel("Total Number Of Trips:");
 		lblNewLabel_2_3_1_3_2.setForeground(new Color(3, 43, 145));
 		lblNewLabel_2_3_1_3_2.setFont(new Font("Century Gothic", Font.PLAIN, 16));
 		lblNewLabel_2_3_1_3_2.setBounds(289, 205, 173, 21);
 		panel_2.add(lblNewLabel_2_3_1_3_2);
-		
+
 		JLabel lblNewLabel_2_3_1_3_3 = new JLabel("Total Revenue (USD):");
 		lblNewLabel_2_3_1_3_3.setForeground(new Color(3, 43, 145));
 		lblNewLabel_2_3_1_3_3.setFont(new Font("Century Gothic", Font.PLAIN, 16));
 		lblNewLabel_2_3_1_3_3.setBounds(289, 258, 173, 21);
 		panel_2.add(lblNewLabel_2_3_1_3_3);
-		
-		JLabel lbTotalNumberOfDrivers = new JLabel("0");
+
+		lbTotalNumberOfDrivers = new JLabel(
+				Init.driverManagementView.getDriverManagementModel().getTotalNumberOfDrivers() + "");
 		lbTotalNumberOfDrivers.setForeground(new Color(255, 0, 0));
 		lbTotalNumberOfDrivers.setFont(new Font("Century Gothic", Font.PLAIN, 16));
 		lbTotalNumberOfDrivers.setBounds(512, 146, 82, 21);
 		panel_2.add(lbTotalNumberOfDrivers);
-		
-		JLabel lbTotalNumberOfTrips = new JLabel("0");
+
+		lbTotalNumberOfTrips = new JLabel(
+				Init.tripManagementView.getTripManagementModel().getTotalNumberOfTrips() + "");
 		lbTotalNumberOfTrips.setForeground(new Color(255, 0, 0));
 		lbTotalNumberOfTrips.setFont(new Font("Century Gothic", Font.PLAIN, 16));
 		lbTotalNumberOfTrips.setBounds(512, 205, 82, 21);
 		panel_2.add(lbTotalNumberOfTrips);
-		
-		JLabel lbTotalRevenue = new JLabel("0");
+
+		lbTotalRevenue = new JLabel(Init.tripManagementView.getTripManagementModel().getTotalRevenue() + "");
 		lbTotalRevenue.setForeground(new Color(255, 0, 0));
 		lbTotalRevenue.setFont(new Font("Century Gothic", Font.PLAIN, 16));
 		lbTotalRevenue.setBounds(512, 258, 82, 21);
 		panel_2.add(lbTotalRevenue);
-		
+
 		JSeparator separator_1 = new JSeparator();
 		separator_1.setForeground(Color.LIGHT_GRAY);
 		separator_1.setBounds(10, 323, 944, 1);
 		panel_2.add(separator_1);
 	}
+
+	public JLabel getLbTotalRevenue() {
+		return lbTotalRevenue;
+	}
+
+	public void setLbTotalRevenue(JLabel lbTotalRevenue) {
+		this.lbTotalRevenue = lbTotalRevenue;
+	}
+
+	public JLabel getLbTotalNumberOfTrips() {
+		return lbTotalNumberOfTrips;
+	}
+
+	public void setLbTotalNumberOfTrips(JLabel lbTotalNumberOfTrips) {
+		this.lbTotalNumberOfTrips = lbTotalNumberOfTrips;
+	}
+
+	public JLabel getLbTotalNumberOfDrivers() {
+		return lbTotalNumberOfDrivers;
+	}
+
+	public void setLbTotalNumberOfDrivers(JLabel lbTotalNumberOfDrivers) {
+		this.lbTotalNumberOfDrivers = lbTotalNumberOfDrivers;
+	}
+
+	public JLabel getLbTotalNumberOfCars() {
+		return lbTotalNumberOfCars;
+	}
+
+	public void setLbTotalNumberOfCars(JLabel lbTotalNumberOfCars) {
+		this.lbTotalNumberOfCars = lbTotalNumberOfCars;
+	}
+
 }
