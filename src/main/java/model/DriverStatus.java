@@ -1,15 +1,18 @@
 package model;
+
 import java.util.ArrayList;
 import java.util.Objects;
 
 public class DriverStatus {
     private int driverStatusID;
     private String driverStatusName;
-    public DriverStatus(){
+
+    public DriverStatus() {
     }
-    public DriverStatus(int driverStatusID,String driverStatusName){
-        this.driverStatusID=driverStatusID;
-        this.driverStatusName=driverStatusName;
+
+    public DriverStatus(int driverStatusID, String driverStatusName) {
+        this.driverStatusID = driverStatusID;
+        this.driverStatusName = driverStatusName;
     }
 
     public int getDriverStatusID() {
@@ -27,13 +30,15 @@ public class DriverStatus {
     public void setDriverStatusName(String driverStatusName) {
         this.driverStatusName = driverStatusName;
     }
+
     @Override
     public String toString() {
         return "DriverStatus [driverStatusID=" + driverStatusID + ", driverStatusName=" + driverStatusName + "]";
     }
+
     @Override
     public int hashCode() {
-        return Objects.hash(driverStatusID,driverStatusName);
+        return Objects.hash(driverStatusID, driverStatusName);
     }
 
     @Override
@@ -47,35 +52,33 @@ public class DriverStatus {
         DriverStatus other = (DriverStatus) obj;
         return driverStatusID == other.driverStatusID && Objects.equals(driverStatusName, other.driverStatusName);
     }
+
     public static ArrayList<DriverStatus> getDriverStatusList() {
         String[] driverStatusArray = { "Available", "Unavailable" };
-        ArrayList<DriverStatus> driverStatusList = new ArrayList<DriverStatus>();
+        ArrayList<DriverStatus> driverStatusList = new ArrayList<>();
         int id = 0;
         for (String driverStatus : driverStatusArray) {
-            DriverStatus ds = new DriverStatus(id, driverStatus);
-            driverStatusList.add(ds);
+            driverStatusList.add(new DriverStatus(id, driverStatus));
+            id++;
         }
         return driverStatusList;
     }
-    public static DriverStatus getDriverStatusById(int id) {
-        return DriverStatus.getDriverStatusList().get(id);
-    }
 
-    public static DriverStatus getDriverStatusByName(String driverStatusName) {
-        ArrayList<DriverStatus> driverStatusList = DriverStatus.getDriverStatusList();
-        for (DriverStatus driverStatus : driverStatusList) {
-            if (driverStatus.driverStatusName.equals(driverStatusName)) {
-                return driverStatus;
+    public static DriverStatus getDriverStatusById(int id) {
+        for (DriverStatus status : getDriverStatusList()) {
+            if (status.getDriverStatusID() == id) {
+                return status;
             }
         }
         return null;
     }
 
-
-
+    public static DriverStatus getDriverStatusByName(String driverStatusName) {
+        for (DriverStatus status : getDriverStatusList()) {
+            if (status.getDriverStatusName().equals(driverStatusName)) {
+                return status;
+            }
+        }
+        return null;
+    }
 }
-
-<<<<<<< HEAD
-=======
-
->>>>>>> 9b91f8d6c6e8b3576918f233226d8e4f8a14c242

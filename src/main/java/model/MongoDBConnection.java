@@ -15,10 +15,10 @@ public class MongoDBConnection {
 	private MongoClient mongoClient;
 	private MongoDatabase database;
 	private static final String DATABASE_NAME = "CO2039DB";
-	private static final String CONNECTION_STRING = "mongodb+srv://nguyencharlie:UOypetd8ChdqrkSu@cluster0.6mc36p0.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0";
+	private static final String CONNECTION_STRING = "mongodb+srv://tuanleqn04:zcN8yWOMTroraocJ@cluster0.8k9ej.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0";
 	
     public static void main(String[] args) {
-        String connectionString = "mongodb+srv://nguyencharlie:UOypetd8ChdqrkSu@cluster0.6mc36p0.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0";
+        String connectionString = "mongodb+srv://tuanleqn04:zcN8yWOMTroraocJ@cluster0.8k9ej.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0";
 
         ServerApi serverApi = ServerApi.builder()
                 .version(ServerApiVersion.V1)

@@ -23,9 +23,10 @@ public class CarManagementListener implements ActionListener {
 
 			this.carManagementView.saveTheCarToModel();
 
-//			JOptionPane.showMessageDialog(carManagementView,
-//					"Looks like you're leaving the information blank.\n Please add it fully.", "Missing Information",
-//					JOptionPane.WARNING_MESSAGE);
+			// JOptionPane.showMessageDialog(carManagementView,
+			// "Looks like you're leaving the information blank.\n Please add it fully.",
+			// "Missing Information",
+			// JOptionPane.WARNING_MESSAGE);
 
 		} else if (str.equals("Edit")) {
 			this.carManagementView.displaySelectedCarInformation();
